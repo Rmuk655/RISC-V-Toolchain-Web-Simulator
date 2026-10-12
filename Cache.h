@@ -63,7 +63,7 @@ public:
     // Set the seed for the random number generator (for testing)
     void setRandomSeed(uint32_t seed) {
         randomSeed = seed;
-        std::srand(randomSeed);
+        rngState = seed;
     }
 
     private:
@@ -71,6 +71,7 @@ public:
         std::ostream* logStream = nullptr;
         Memory *memory = nullptr;
         CacheConfig config;
+        uint32_t rngState = 1; // state of the portable generator used for RANDOM replacement
         uint32_t randomSeed = 0; // 0 means "not set", use time-based default which will be real random
 
         AddressDecoder addrDecoder;

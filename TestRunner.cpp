@@ -60,6 +60,14 @@ bool compareBinaryFiles(const std::string &file1, const std::string &file2)
     return std::equal(begin1, end1, begin2);
 }
 
+// Normalizes one line of text for comparison: removes carriage returns and treats '\\' and '/' as the same
+// path separator, so expected-output files generated on Windows also match output produced on Linux and macOS.
+static void normalizeLine(std::string &line)
+{
+    line.erase(std::remove(line.begin(), line.end(), '\r'), line.end());
+    std::replace(line.begin(), line.end(), '\\', '/');
+}
+
 // Normalize line endings before comparison
 // Instead of comparing in binary mode, read both files line-by-line,
 // strip carriage returns (\r), then compare. This allows you to ignore Windows/Unix line-ending differences.
@@ -79,9 +87,9 @@ bool compareTextFilesNormalized(const std::string &file1, const std::string &fil
             return false;
         }
 
-        // Normalize both lines: remove \r, trim spaces
-        line1.erase(std::remove(line1.begin(), line1.end(), '\r'), line1.end());
-        line2.erase(std::remove(line2.begin(), line2.end(), '\r'), line2.end());
+        // Normalize both lines: remove \r and unify path separators
+        normalizeLine(line1);
+        normalizeLine(line2);
 
         if (line1 != line2)
         {
@@ -130,6 +138,8 @@ bool compareTextFiles(const std::string &file1, const std::string &file2)
             break; // both ended, equal
         if (b1 != b2)
             return false; // one ended earlier
+        normalizeLine(line1);
+        normalizeLine(line2);
         if (line1 != line2)
             return false;
     }
@@ -179,7 +189,7 @@ std::vector<std::string> standardPipelineCommands(const std::string &configPath,
         "pipeline hazards",
         "pipeline stalls",
        // "pipeline stages",
-        "pipeline dump "+ configPath +"./pipeline_dump",
+        "pipeline dump "+ configPath + "/pipeline_dump",
         "pipeline forwarding disable",
         "pipeline status ",
         "pipeline analyze",        
