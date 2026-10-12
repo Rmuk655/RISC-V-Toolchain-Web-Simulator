@@ -100,6 +100,7 @@ W: Address: 0x1000000, Set: 0x0, Tag: 0x8000, Dirty, Hit, WB
 Run several configurations, then compare them with the visualizer:
 
 ```bash
+pip install -r requirements.txt    # streamlit, pandas, matplotlib (visualizer only)
 streamlit run CachesimulatorGUI.py
 ```
 
