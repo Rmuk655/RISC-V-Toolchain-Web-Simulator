@@ -6,6 +6,8 @@ An assembler, disassembler, interactive debugger and microarchitecture simulator
 
 Built for the Computer Architecture course (CS2323) at IIT Hyderabad.
 
+**[Try the simulator in your browser](https://rmuk655.github.io/RISC-V-Toolchain-Web-Simulator/)**: the C++ engine compiled to WebAssembly, no install needed. It is rebuilt and redeployed from `main` by GitHub Actions, and a Node smoke test runs a program through the same bindings on every build.
+
 ## Architecture
 
 ```mermaid
@@ -111,7 +113,7 @@ It reports the average hit rate per configuration and can filter by write policy
 ## Web simulator
 
 ```bash
-make websim         # needs the Emscripten toolchain (em++); produces riscv_web.js + .wasm
+make websim         # needs the Emscripten toolchain (em++); produces riscv_web.js + riscv_web.wasm
 make serve          # serves http://localhost:8000/index.html
 ```
 
