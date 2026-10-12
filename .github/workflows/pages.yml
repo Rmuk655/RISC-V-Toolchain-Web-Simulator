@@ -1,0 +1,46 @@
+name: Web simulator (GitHub Pages)
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: 3.1.64
+      - name: Build the WebAssembly simulator
+        run: make websim
+      - name: Smoke test the WebAssembly build under Node
+        run: |
+          SRC=$(ls *.cpp | grep -v -e '^main.cpp$' -e '^TestRunner.cpp$')
+          em++ -std=c++17 -O1 -s WASM=1 -s MODULARIZE=1 -s EXPORT_NAME=createModule -s EXPORT_ES6=1 \
+            -s ENVIRONMENT=node -s NO_EXIT_RUNTIME=1 --no-entry -s FORCE_FILESYSTEM=1 --bind \
+            $SRC -o riscv_node.mjs
+          node tests/wasm_smoke.mjs
+      - name: Assemble the site
+        run: |
+          mkdir _site
+          cp index.html script.js styles.css riscv_web.js riscv_web.wasm _site/
+          touch _site/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
