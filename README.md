@@ -1,5 +1,7 @@
 # RISC-V Toolchain & Web Simulator
 
+[![CI](https://github.com/Rmuk655/RISC-V-Toolchain-Web-Simulator/actions/workflows/ci.yml/badge.svg)](https://github.com/Rmuk655/RISC-V-Toolchain-Web-Simulator/actions/workflows/ci.yml)
+
 An assembler, disassembler, interactive debugger and microarchitecture simulator for RISC-V, written in C++17 with no third-party dependencies. The same C++ core compiles to WebAssembly and drives a browser-based simulator.
 
 Built for the Computer Architecture course (CS2323) at IIT Hyderabad.
