@@ -4,6 +4,22 @@ An assembler, disassembler, interactive debugger and microarchitecture simulator
 
 Built for the Computer Architecture course (CS2323) at IIT Hyderabad.
 
+## Architecture
+
+```mermaid
+flowchart LR
+  S["assembly .s"] --> P[Parser + LabelSet] --> A[Assembler] --> B["machine code .b"]
+  B --> D[Disassembler] --> S
+  S --> SIM[Simulator]
+  B --> SIM
+  SIM --> MEM[Memory]
+  SIM --> C[Cache model]
+  SIM --> H[Hazard detector]
+  SIM --> DBG[Interactive debugger]
+  SIM --> W["WebAssembly bindings"] --> UI["Browser UI"]
+  C --> V["Streamlit cache visualizer"]
+```
+
 ## What it does
 
 | Component | Description |
