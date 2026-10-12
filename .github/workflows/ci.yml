@@ -1,0 +1,13 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: make build
+      - name: Run the test suite
+        run: |
+          make test 2>&1 | tee test.log
+          if grep -q "\[FAIL\]" test.log; then echo "test failures found"; exit 1; fi
