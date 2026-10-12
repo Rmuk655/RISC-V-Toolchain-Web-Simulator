@@ -8,14 +8,14 @@ Block Size: 16
 Associativity: 2
 Replacement Policy: FIFO
 Write Back Policy: WT
-RISC Sim> Executed: lui   t0, 0x1 (line: 6) ; PC =  hex: 0x000000
-RISC Sim> Executed: addi  t1, zero, 123 (line: 8) ; PC =  hex: 0x000004
-Executed: sw    t1, 0(t0) (line: 9) ; PC =  hex: 0x000008
-Executed: lw    t1, 0(t0) (line: 13) ; PC =  hex: 0x00000c
-Executed: lw    t2, 512(t0) (line: 14) ; PC =  hex: 0x000010
-Executed: lw    t3, 1024(t0) (line: 15) ; PC =  hex: 0x000014
-Executed: lw    t4, 512(t0) (line: 19) ; PC =  hex: 0x000018
-Executed: lw    t5, 0(t0) (line: 20) ; PC =  hex: 0x00001c
+RISC Sim> Executed: lui   t0, 0x1 (line: 6) ; PC = 0x000000 (0)
+RISC Sim> Executed: addi  t1, zero, 123 (line: 8) ; PC = 0x000004 (4)
+Executed: sw    t1, 0(t0) (line: 9) ; PC = 0x000008 (8)
+Executed: lw    t1, 0(t0) (line: 13) ; PC = 0x00000c (12)
+Executed: lw    t2, 512(t0) (line: 14) ; PC = 0x000010 (16)
+Executed: lw    t3, 1024(t0) (line: 15) ; PC = 0x000014 (20)
+Executed: lw    t4, 512(t0) (line: 19) ; PC = 0x000018 (24)
+Executed: lw    t5, 0(t0) (line: 20) ; PC = 0x00001c (28)
 Program completed (possibly reached end of program).
 Program: test
 D-cache statistics:   Accesses: 6   Hits: 1   Misses: 5   Hit Rate: 16.6667%
