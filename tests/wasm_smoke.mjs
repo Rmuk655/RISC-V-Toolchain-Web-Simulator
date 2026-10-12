@@ -12,8 +12,9 @@ const regs = sim.getRegisters();
 console.log("load() returned", rc);
 console.log(regs);
 
-if (!/x3\D+(0x0*c|12)\b/i.test(regs)) {
-  console.error("FAIL: expected x3 to hold 12 after running the program");
+// Registers are printed in hexadecimal, so 5 + 7 = 12 appears as "c".
+if (!/\bx3:\s*(0x)?0*c\b/i.test(regs)) {
+  console.error("FAIL: expected x3 to hold 12 (0xc) after running the program");
   process.exit(1);
 }
-console.log("PASS: x3 = 12");
+console.log("PASS: x3 = 0xc (12)");
