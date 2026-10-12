@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="840" viewBox="0 0 560 840" role="img" aria-label="pipeline hazard analysis">
+<rect width="560" height="840" rx="10" fill="#0d1117"/>
+<rect width="560" height="34" rx="10" fill="#161b22"/><rect y="24" width="560" height="10" fill="#161b22"/>
+<circle cx="18" cy="17" r="6" fill="#ff5f56"/><circle cx="38" cy="17" r="6" fill="#ffbd2e"/><circle cx="58" cy="17" r="6" fill="#27c93f"/>
+<text x="280" y="22" fill="#8b949e" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="12" text-anchor="middle">pipeline hazard analysis</text>
+<text x="16" y="62" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"><tspan fill="#7ee787">$ </tspan><tspan fill="#c9d1d9">./riscv_sim.exe -mode RV64IM -s</tspan></text>
+<text x="16" y="80" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">=== Interactive RISC-V Simulator ===</text>
+<text x="16" y="98" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"><tspan fill="#7ee787">RISC Sim&gt;</tspan><tspan fill="#c9d1d9"> Pipeline hazard detection enabled</tspan></text>
+<text x="16" y="116" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Pipeline simulation enabled with hazard detection.</text>
+<text x="16" y="134" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"><tspan fill="#7ee787">RISC Sim&gt;</tspan><tspan fill="#c9d1d9"> Loading program...</tspan></text>
+<text x="16" y="152" fill="#ffa657" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Loaded program from Test/PipelineHazards/DataRawSimple/test.asm</text>
+<text x="16" y="170" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"><tspan fill="#7ee787">RISC Sim&gt;</tspan><tspan fill="#c9d1d9"></tspan></text>
+<text x="16" y="188" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">=== PERFORMANCE ANALYSIS ===</text>
+<text x="16" y="206" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Program instructions: 4</text>
+<text x="16" y="224" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Total hazards detected: 2</text>
+<text x="16" y="242" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Total stall cycles: 0</text>
+<text x="16" y="260" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Estimated CPI (without hazards): 1.0</text>
+<text x="16" y="278" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Estimated CPI (with hazards): 1</text>
+<text x="16" y="296" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">===========================</text>
+<text x="16" y="314" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"></text>
+<text x="16" y="332" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Static analysis of pipeline completed.</text>
+<text x="16" y="350" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"><tspan fill="#7ee787">RISC Sim&gt;</tspan><tspan fill="#c9d1d9"></tspan></text>
+<text x="16" y="368" fill="#ffa657" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">=== Critical Hazards (Stalls &gt; 0) ===</text>
+<text x="16" y="386" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">None</text>
+<text x="16" y="404" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"></text>
+<text x="16" y="422" fill="#ffa657" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">=== Resolved / Non-Critical Hazards ===</text>
+<text x="16" y="440" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">   Instruction: sub x4, x1, x5 at PC=0x4</text>
+<text x="16" y="458" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">   Depends on: add x1, x2, x3 (PC=0x0)</text>
+<text x="16" y="476" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">   Distance: 1 instruction</text>
+<text x="16" y="494" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">   Register: x1   Stall cycles: 0</text>
+<text x="16" y="512" fill="#ffa657" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">   Note: Hazard resolved by separation or forwarding</text>
+<text x="16" y="530" fill="#ffa657" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">   Description: RAW Hazard: Read-after-Write on x1</text>
+<text x="16" y="548" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">   Solution: No stall needed (forwarding available)</text>
+<text x="16" y="566" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"></text>
+<text x="16" y="584" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">   Instruction: and x9, x1, x10 at PC=0xc</text>
+<text x="16" y="602" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">   Depends on: add x1, x2, x3 (PC=0x0)</text>
+<text x="16" y="620" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">   Distance: 3 instructions</text>
+<text x="16" y="638" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">   Register: x1   Stall cycles: 0</text>
+<text x="16" y="656" fill="#ffa657" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">   Note: Hazard resolved by separation or forwarding</text>
+<text x="16" y="674" fill="#ffa657" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">   Description: RAW Hazard: Read-after-Write on x1</text>
+<text x="16" y="692" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">   Solution: No stall needed (forwarding available)</text>
+<text x="16" y="710" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"></text>
+<text x="16" y="728" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"><tspan fill="#7ee787">RISC Sim&gt;</tspan><tspan fill="#c9d1d9"> Pipeline Stall Statistics:</tspan></text>
+<text x="16" y="746" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">  Total Stalls: 0</text>
+<text x="16" y="764" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">  Total Instructions: 4</text>
+<text x="16" y="782" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">  Total Cycles: 4</text>
+<text x="16" y="800" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">  CPI: 1</text>
+<text x="16" y="818" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"><tspan fill="#7ee787">RISC Sim&gt;</tspan><tspan fill="#c9d1d9"> Exiting simulator...</tspan></text>
+</svg>

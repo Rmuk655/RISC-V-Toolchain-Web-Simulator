@@ -8,6 +8,16 @@ Built for the Computer Architecture course (CS2323) at IIT Hyderabad.
 
 **[Try the simulator in your browser](https://rmuk655.github.io/RISC-V-Toolchain-Web-Simulator/)**: the C++ engine compiled to WebAssembly, no install needed. It is rebuilt and redeployed from `main` by GitHub Actions, and a Node smoke test runs a program through the same bindings on every build.
 
+## Screenshots
+
+Real output from the simulator (`examples/loop.s` doubles a register five times):
+
+![Interactive debugger: load, set a breakpoint, run, inspect registers, step](docs/images/debugger-session.svg)
+
+| Cache simulation | Pipeline hazard analysis |
+|---|---|
+| ![Cache hit and miss statistics](docs/images/cache-simulation.svg) | ![Static pipeline hazard analysis](docs/images/pipeline-hazards.svg) |
+
 ## Architecture
 
 ```mermaid

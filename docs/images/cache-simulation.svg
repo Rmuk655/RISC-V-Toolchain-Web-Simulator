@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="774" height="354" viewBox="0 0 774 354" role="img" aria-label="cache simulation">
+<rect width="774" height="354" rx="10" fill="#0d1117"/>
+<rect width="774" height="34" rx="10" fill="#161b22"/><rect y="24" width="774" height="10" fill="#161b22"/>
+<circle cx="18" cy="17" r="6" fill="#ff5f56"/><circle cx="38" cy="17" r="6" fill="#ffbd2e"/><circle cx="58" cy="17" r="6" fill="#27c93f"/>
+<text x="387" y="22" fill="#8b949e" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="12" text-anchor="middle">cache simulation</text>
+<text x="16" y="62" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"><tspan fill="#7ee787">$ </tspan><tspan fill="#c9d1d9">./riscv_sim.exe -mode RV64IM -s</tspan></text>
+<text x="16" y="80" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">=== Interactive RISC-V Simulator ===</text>
+<text x="16" y="98" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"><tspan fill="#7ee787">RISC Sim&gt;</tspan><tspan fill="#c9d1d9"> Cache simulation enabled with configuration from Test/CacheSimulator/read_hit/config</tspan></text>
+<text x="16" y="116" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"><tspan fill="#7ee787">RISC Sim&gt;</tspan><tspan fill="#c9d1d9"> Loading program...</tspan></text>
+<text x="16" y="134" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Loaded program from Test/CacheSimulator/read_hit/test.asm</text>
+<text x="16" y="152" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"><tspan fill="#7ee787">RISC Sim&gt;</tspan><tspan fill="#c9d1d9"> Executed: lui   t0, 0x1 (line: 2) ; PC =  hex: 0x000000</tspan></text>
+<text x="16" y="170" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: addi  t1, zero, 123 (line: 3) ; PC =  hex: 0x000004</text>
+<text x="16" y="188" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: sw    t1, 0(t0) (line: 4) ; PC =  hex: 0x000008</text>
+<text x="16" y="206" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: lw    t2, 0(t0) (line: 5) ; PC =  hex: 0x00000c</text>
+<text x="16" y="224" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: lw    t3, 0(t0) (line: 6) ; PC =  hex: 0x000010</text>
+<text x="16" y="242" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Program completed (possibly reached end of program).</text>
+<text x="16" y="260" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Program: test</text>
+<text x="16" y="278" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">D-cache statistics:   Accesses: 3   Hits: 1   Misses: 2   Hit Rate: 33.3333%</text>
+<text x="16" y="296" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"><tspan fill="#7ee787">RISC Sim&gt;</tspan><tspan fill="#c9d1d9"> Program: test</tspan></text>
+<text x="16" y="314" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">D-cache statistics:   Accesses: 3   Hits: 1   Misses: 2   Hit Rate: 33.3333%</text>
+<text x="16" y="332" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"><tspan fill="#7ee787">RISC Sim&gt;</tspan><tspan fill="#c9d1d9"> Exiting simulator...</tspan></text>
+</svg>

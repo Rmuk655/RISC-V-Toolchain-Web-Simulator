@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1043" height="840" viewBox="0 0 1043 840" role="img" aria-label="riscv_sim.exe -mode RV64IM -s  (interactive debugger)">
+<rect width="1043" height="840" rx="10" fill="#0d1117"/>
+<rect width="1043" height="34" rx="10" fill="#161b22"/><rect y="24" width="1043" height="10" fill="#161b22"/>
+<circle cx="18" cy="17" r="6" fill="#ff5f56"/><circle cx="38" cy="17" r="6" fill="#ffbd2e"/><circle cx="58" cy="17" r="6" fill="#27c93f"/>
+<text x="521" y="22" fill="#8b949e" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="12" text-anchor="middle">riscv_sim.exe -mode RV64IM -s  (interactive debugger)</text>
+<text x="16" y="62" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"><tspan fill="#7ee787">$ </tspan><tspan fill="#c9d1d9">./riscv_sim.exe -mode RV64IM -s</tspan></text>
+<text x="16" y="80" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">=== Interactive RISC-V Simulator ===</text>
+<text x="16" y="98" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"><tspan fill="#7ee787">RISC Sim&gt;</tspan><tspan fill="#c9d1d9"> Loading program...</tspan></text>
+<text x="16" y="116" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Loaded program from examples/loop.s</text>
+<text x="16" y="134" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"><tspan fill="#7ee787">RISC Sim&gt;</tspan><tspan fill="#c9d1d9"> Printing currently loaded instructions ....</tspan></text>
+<text x="16" y="152" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">addi x5, x0, 5</text>
+<text x="16" y="170" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">addi x6, x0, 1</text>
+<text x="16" y="188" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">beq x5, x0, done</text>
+<text x="16" y="206" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">add x6, x6, x6</text>
+<text x="16" y="224" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">addi x5, x5, -1</text>
+<text x="16" y="242" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">jal x0, loop</text>
+<text x="16" y="260" fill="#c9d1d9" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">addi x10, x6, 0</text>
+<text x="16" y="278" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"><tspan fill="#7ee787">RISC Sim&gt;</tspan><tspan fill="#c9d1d9"> No valid Instruction at line number: 4</tspan></text>
+<text x="16" y="296" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"><tspan fill="#7ee787">RISC Sim&gt;</tspan><tspan fill="#c9d1d9"> Executed: addi x5, x0, 5 (line: 2) ; PC =  hex: 0x000000</tspan></text>
+<text x="16" y="314" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: addi x6, x0, 1 (line: 3) ; PC =  hex: 0x000004</text>
+<text x="16" y="332" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: beq x5, x0, done (line: 5) ; PC =  hex: 0x000008</text>
+<text x="16" y="350" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: add x6, x6, x6 (line: 6) ; PC =  hex: 0x00000c</text>
+<text x="16" y="368" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: addi x5, x5, -1 (line: 7) ; PC =  hex: 0x000010</text>
+<text x="16" y="386" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: jal x0, loop (line: 8) ; PC =  hex: 0x000014</text>
+<text x="16" y="404" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: beq x5, x0, done (line: 5) ; PC =  hex: 0x000008</text>
+<text x="16" y="422" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: add x6, x6, x6 (line: 6) ; PC =  hex: 0x00000c</text>
+<text x="16" y="440" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: addi x5, x5, -1 (line: 7) ; PC =  hex: 0x000010</text>
+<text x="16" y="458" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: jal x0, loop (line: 8) ; PC =  hex: 0x000014</text>
+<text x="16" y="476" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: beq x5, x0, done (line: 5) ; PC =  hex: 0x000008</text>
+<text x="16" y="494" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: add x6, x6, x6 (line: 6) ; PC =  hex: 0x00000c</text>
+<text x="16" y="512" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: addi x5, x5, -1 (line: 7) ; PC =  hex: 0x000010</text>
+<text x="16" y="530" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: jal x0, loop (line: 8) ; PC =  hex: 0x000014</text>
+<text x="16" y="548" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: beq x5, x0, done (line: 5) ; PC =  hex: 0x000008</text>
+<text x="16" y="566" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: add x6, x6, x6 (line: 6) ; PC =  hex: 0x00000c</text>
+<text x="16" y="584" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: addi x5, x5, -1 (line: 7) ; PC =  hex: 0x000010</text>
+<text x="16" y="602" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: jal x0, loop (line: 8) ; PC =  hex: 0x000014</text>
+<text x="16" y="620" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: beq x5, x0, done (line: 5) ; PC =  hex: 0x000008</text>
+<text x="16" y="638" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: add x6, x6, x6 (line: 6) ; PC =  hex: 0x00000c</text>
+<text x="16" y="656" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: addi x5, x5, -1 (line: 7) ; PC =  hex: 0x000010</text>
+<text x="16" y="674" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: jal x0, loop (line: 8) ; PC =  hex: 0x000014</text>
+<text x="16" y="692" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: beq x5, x0, done (line: 5) ; PC =  hex: 0x000008</text>
+<text x="16" y="710" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Executed: addi x10, x6, 0 (line: 10) ; PC =  hex: 0x000018</text>
+<text x="16" y="728" fill="#79c0ff" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve">Program completed (possibly reached end of program).</text>
+<text x="16" y="746" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"><tspan fill="#7ee787">RISC Sim&gt;</tspan><tspan fill="#c9d1d9"> x0: 0  x1: 0  x2: 0  x3: 0  x4: 0  x5: 0  x6: 20  x7: 0  x8: 0  x9: 0  x10: 20  x11: 0  x12: 0  x13: 0  x14: 0  x15: 0</tspan></text>
+<text x="16" y="764" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"><tspan fill="#7ee787">RISC Sim&gt;</tspan><tspan fill="#c9d1d9">  Nothing to step: reached end of the progeam</tspan></text>
+<text x="16" y="782" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"><tspan fill="#7ee787">RISC Sim&gt;</tspan><tspan fill="#c9d1d9"> Program completed (possibly reached end of program).</tspan></text>
+<text x="16" y="800" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"><tspan fill="#7ee787">RISC Sim&gt;</tspan><tspan fill="#c9d1d9"> x0: 0  x1: 0  x2: 0  x3: 0  x4: 0  x5: 0  x6: 20  x7: 0  x8: 0  x9: 0  x10: 20  x11: 0  x12: 0  x13: 0  x14: 0  x15: 0</tspan></text>
+<text x="16" y="818" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" xml:space="preserve"><tspan fill="#7ee787">RISC Sim&gt;</tspan><tspan fill="#c9d1d9"> Exiting simulator...</tspan></text>
+</svg>
