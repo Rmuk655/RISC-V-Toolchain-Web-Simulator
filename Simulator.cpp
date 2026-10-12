@@ -175,8 +175,8 @@ int Simulator::step()
     execute(program[instrIndex]);
 
     out << "Executed: " << program[instrIndex]
-        << " (line: " << sourceLine << ") ; PC = " << " hex: 0x" << std::setfill('0') << std::setw(6)
-        << std::hex << old_pc << std::dec << "\n";
+        << " (line: " << sourceLine << ") ; PC = 0x" << std::setfill('0') << std::setw(6)
+        << std::hex << old_pc << std::dec << std::setfill(' ') << " (" << old_pc << ")\n";
     // Advance to nexte step ; Every instruction is 4 bytes
     if (pc <= 4 * (int)program.size() - 4)
         pc += 4; // dont update pc if you are already at last line

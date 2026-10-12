@@ -8,11 +8,11 @@ Block Size: 16
 Associativity: 8
 Replacement Policy: LRU
 Write Back Policy: WT
-RISC Sim> Executed: lui   t0, 0x1 (line: 2) ; PC =  hex: 0x000000
-RISC Sim> Executed: addi  t1, zero, 123 (line: 3) ; PC =  hex: 0x000004
-Executed: sw    t1, 0(t0) (line: 4) ; PC =  hex: 0x000008
-Executed: lw    t2, 0(t0) (line: 5) ; PC =  hex: 0x00000c
-Executed: lw    t3, 0(t0) (line: 6) ; PC =  hex: 0x000010
+RISC Sim> Executed: lui   t0, 0x1 (line: 2) ; PC = 0x000000 (0)
+RISC Sim> Executed: addi  t1, zero, 123 (line: 3) ; PC = 0x000004 (4)
+Executed: sw    t1, 0(t0) (line: 4) ; PC = 0x000008 (8)
+Executed: lw    t2, 0(t0) (line: 5) ; PC = 0x00000c (12)
+Executed: lw    t3, 0(t0) (line: 6) ; PC = 0x000010 (16)
 Program completed (possibly reached end of program).
 Program: test
 D-cache statistics:   Accesses: 3   Hits: 1   Misses: 2   Hit Rate: 33.3333%

@@ -8,17 +8,17 @@ Block Size: 16
 Associativity: 2
 Replacement Policy: LRU
 Write Back Policy: WT
-RISC Sim> Executed: lui t0, 0x1000 (line: 4) ; PC =  hex: 0x000000
-RISC Sim> Executed: lw t1, 0(t0) (line: 7) ; PC =  hex: 0x000004
-Executed: addi t0, t0, 512 (line: 10) ; PC =  hex: 0x000008
-Executed: lw t2, 0(t0) (line: 11) ; PC =  hex: 0x00000c
-Executed: addi t0, t0, -512 (line: 14) ; PC =  hex: 0x000010
-Executed: lw t3, 0(t0) (line: 15) ; PC =  hex: 0x000014
-Executed: addi t0, t0, 1024 (line: 18) ; PC =  hex: 0x000018
-Executed: lw t4, 0(t0) (line: 19) ; PC =  hex: 0x00001c
-Executed: sw t5, 0(t0) (line: 22) ; PC =  hex: 0x000020
-Executed: addi t0, t0, 512 (line: 25) ; PC =  hex: 0x000024
-Executed: sw t5, 0(t0) (line: 26) ; PC =  hex: 0x000028
+RISC Sim> Executed: lui t0, 0x1000 (line: 4) ; PC = 0x000000 (0)
+RISC Sim> Executed: lw t1, 0(t0) (line: 7) ; PC = 0x000004 (4)
+Executed: addi t0, t0, 512 (line: 10) ; PC = 0x000008 (8)
+Executed: lw t2, 0(t0) (line: 11) ; PC = 0x00000c (12)
+Executed: addi t0, t0, -512 (line: 14) ; PC = 0x000010 (16)
+Executed: lw t3, 0(t0) (line: 15) ; PC = 0x000014 (20)
+Executed: addi t0, t0, 1024 (line: 18) ; PC = 0x000018 (24)
+Executed: lw t4, 0(t0) (line: 19) ; PC = 0x00001c (28)
+Executed: sw t5, 0(t0) (line: 22) ; PC = 0x000020 (32)
+Executed: addi t0, t0, 512 (line: 25) ; PC = 0x000024 (36)
+Executed: sw t5, 0(t0) (line: 26) ; PC = 0x000028 (40)
 Program completed (possibly reached end of program).
 Program: test
 D-cache statistics:   Accesses: 6   Hits: 2   Misses: 4   Hit Rate: 33.3333%
