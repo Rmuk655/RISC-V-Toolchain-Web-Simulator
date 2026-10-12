@@ -107,10 +107,10 @@ The suite covers:
 1. Unit tests and an assemble, disassemble round trip on standard instructions.
 2. The assembler on every `.s` file under `Test/`, compared with `.expect` files.
 3. The disassembler on `.b` files.
-4. The interactive simulator on `.s` programs.
+4. The interactive simulator on `.s` programs (24 programs).
 5. The cache simulator (14 configurations) and pipeline hazard detection (17 cases).
 
-**Platform note:** the `.expect` files were generated on Windows and contain `\` path separators. On Linux, the unit, assembler (24/24) and disassembler (24/24) suites pass, while the simulator, cache and hazard suites report mismatches that come only from `Test\foo.s` versus `Test/foo.s` in the "Loaded program from ..." line. Regenerating the expectations on Linux is a known to-do.
+The suite is platform independent: path separators in the expected output are normalized, and `RANDOM` cache replacement uses a built-in seeded generator, so results are reproducible on Windows, Linux and macOS.
 
 ## Repository layout
 

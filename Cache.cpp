@@ -117,11 +117,11 @@
 
         if (config.replacementPolicy == ReplacementPolicy::RANDOM) {
             if (randomSeed == 0) {
-                std::srand(static_cast<unsigned int>(time(nullptr)));  // seed rand once
+                rngState = static_cast<uint32_t>(time(nullptr));  // seed the generator once
             }
             else {
             // during tests use a fixed seed.
-            std::srand(randomSeed);
+            rngState = randomSeed;
             }
         }
 
@@ -178,7 +178,10 @@
             }
         } else if (config.replacementPolicy == ReplacementPolicy::RANDOM) {
             policyStr = "RANDOM";
-            int randomIndex = std::rand() % static_cast<int>(set.size());
+            // Portable linear congruential generator (same constants as the classic ANSI C example), so that
+            // RANDOM replacement is reproducible for a given seed on every platform and C library.
+            rngState = rngState * 1103515245u + 12345u;
+            int randomIndex = static_cast<int>((rngState >> 16) % set.size());
             victim = &set[randomIndex];
         } else {
             policyStr = "DEFAULT";

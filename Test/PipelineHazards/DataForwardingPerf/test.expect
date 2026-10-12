@@ -53,8 +53,8 @@ RISC Sim> Pipeline Stall Statistics:
   Total Instructions: 5
   Total Cycles: 6
   CPI: 1.2
-RISC Sim> Pipeline state dumped to Test/PipelineHazards\DataForwardingPerf./pipeline_dump
-Pipeline analysis dumped to Test/PipelineHazards\DataForwardingPerf./pipeline_dump
+RISC Sim> Pipeline state dumped to Test/PipelineHazards\DataForwardingPerf/pipeline_dump
+Pipeline analysis dumped to Test/PipelineHazards\DataForwardingPerf/pipeline_dump
 RISC Sim> Data forwarding disabled
 Data forwarding disabled.
 RISC Sim> Pipeline Status:
