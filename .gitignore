@@ -21,3 +21,5 @@ nul
 cache_dump
 pipeline_dump
 test.out
+emsdk/
+test*.dump
