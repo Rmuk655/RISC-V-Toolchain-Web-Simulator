@@ -50,11 +50,8 @@
     <!-- ISA Selector -->
     <div class="button-group">
       <label for="instructionSet">ISA:</label>
-      <select id="instructionSet">
-        <option value="rv32i">RV32I Base</option>
-        <option value="rv32imc">RV32IM</option>
-        <option value="rv64i">RV64I</option>
-        <option value="rv64imc">RV64I</option>
+      <select id="instructionSet" disabled title="The WebAssembly simulator always runs RV64IM">
+        <option value="rv64im" selected>RV64IM</option>
       </select>
     </div>
 
