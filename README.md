@@ -10,6 +10,10 @@ Built for the Computer Architecture course (CS2323) at IIT Hyderabad.
 
 ## Screenshots
 
+The browser simulator after running a program that computes 10! with `mul` and round-trips the result through memory (`x11` and `x13` hold `0x00375F00` = 3,628,800):
+
+![Web simulator: assembly, machine code, registers and execution trace](docs/images/web-simulator.png)
+
 Real output from the simulator (`examples/loop.s` doubles a register five times):
 
 ![Interactive debugger: load, set a breakpoint, run, inspect registers, step](docs/images/debugger-session.svg)
