@@ -219,6 +219,7 @@ int TestRunner::runIntegrationTestSuite(const std::string &testDir, ISAMode mode
     int assemblerRuns = 0, assemblerPasses = 0;
     int deassemblerRuns = 0, deassemblerPasses = 0;
     int simulatorRuns = 0, simulatorPasses = 0;
+    int unreadableFiles = 0;
 
     for (const auto &entry : fs::directory_iterator(testDir))
     {
@@ -233,6 +234,7 @@ int TestRunner::runIntegrationTestSuite(const std::string &testDir, ISAMode mode
             if (!asmFile.is_open())
             {
                 std::cerr << "[ERROR] Cannot open " << path << "\n";
+                ++unreadableFiles;
                 continue;
             }
             std::vector<std::string> asmLines;
@@ -350,7 +352,112 @@ int TestRunner::runIntegrationTestSuite(const std::string &testDir, ISAMode mode
     std::cout << "Deassembler Tests run: " << deassemblerRuns << ", passed: " << deassemblerPasses << "\n";
     std::cout << "Simulator Tests run: " << simulatorRuns << ", passed: " << simulatorPasses << "\n";
 
-    return true;
+    bool allPassed = unreadableFiles == 0 &&
+                     assemblerRuns == assemblerPasses &&
+                     deassemblerRuns == deassemblerPasses &&
+                     simulatorRuns == simulatorPasses;
+    return allPassed ? 0 : 1;
+}
+
+// Splits a string on whitespace so register dumps compare independent of tab/space layout.
+static std::vector<std::string> splitTokens(const std::string &s)
+{
+    std::istringstream in(s);
+    std::vector<std::string> tokens;
+    std::string tok;
+    while (in >> tok)
+        tokens.push_back(tok);
+    return tokens;
+}
+
+/**
+ * @brief Runs every Test/Semantics/<name>.s program to completion and compares the final
+ * register dump with <name>.expect.
+ *
+ * The shared simulator suite only prints registers after the first step, so it cannot catch
+ * wrong register values. The expected dumps here are derived by hand from the RISC-V spec,
+ * not recorded from simulator output.
+ *
+ * @return 0 if all tests pass, 1 otherwise (including a missing directory).
+ */
+int TestRunner::runSemanticsTests(const std::string &dir, ISAMode mode)
+{
+    if (!fs::exists(dir))
+    {
+        std::cout << "[FAIL] Semantics Tests: directory " << dir << " not found\n";
+        return 1;
+    }
+
+    std::vector<fs::path> programs;
+    for (const auto &entry : fs::directory_iterator(dir))
+    {
+        if (entry.path().extension() == ".s")
+            programs.push_back(entry.path());
+    }
+    std::sort(programs.begin(), programs.end());
+
+    // Each program runs without a cache, then with write-back and write-through caches: a cache must not change results.
+    const std::vector<std::string> cacheConfigs = {"", "Test/Semantics/cache_wb.config", "Test/Semantics/cache_wt.config"};
+    int testsRun = 0, testsPassed = 0;
+    for (const auto &cacheConfig : cacheConfigs)
+    for (const auto &program : programs)
+    {
+        ++testsRun;
+        fs::path expectPath = program;
+        expectPath.replace_extension(".expect");
+
+        std::ifstream expectFile(expectPath);
+        if (!expectFile.is_open())
+        {
+            std::cout << "[FAIL] Semantics Test: " << program.string() << " (missing " << expectPath.string() << ")\n";
+            continue;
+        }
+        std::stringstream expectText;
+        expectText << expectFile.rdbuf();
+
+        std::stringstream commandInput;
+        if (!cacheConfig.empty())
+            commandInput << "cache_sim enable " << cacheConfig << "\n";
+        commandInput << "load " << program.string() << "\nrun\nregs\nexit\n";
+        std::ostringstream simOutput;
+        InteractiveSimulator interactiveSim(commandInput, simOutput, mode);
+        interactiveSim.runInteractive();
+
+        // The register dump is the two lines starting at "x0:" (x0..x15, then x16..x31).
+        std::istringstream outLines(simOutput.str());
+        std::string line, actualDump;
+        bool inDump = false;
+        int dumpLines = 0;
+        while (std::getline(outLines, line) && dumpLines < 2)
+        {
+            size_t at = inDump ? 0 : line.find("x0:");
+            if (!inDump && at == std::string::npos)
+                continue;
+            inDump = true;
+            actualDump += line.substr(at) + "\n";
+            ++dumpLines;
+        }
+
+        std::vector<std::string> actual = splitTokens(actualDump);
+        std::vector<std::string> expected = splitTokens(expectText.str());
+        if (actual == expected)
+        {
+            ++testsPassed;
+            std::cout << "[PASS] Semantics Test: " << program.string() << "\n";
+            continue;
+        }
+
+        std::cout << "[FAIL] Semantics Test: " << program.string() << " (register mismatch)\n";
+        for (size_t i = 0; i + 1 < expected.size(); i += 2)
+        {
+            std::string got = i + 1 < actual.size() && actual[i] == expected[i] ? actual[i + 1] : "<missing>";
+            if (got != expected[i + 1])
+                std::cout << "    " << expected[i] << " expected " << expected[i + 1] << ", got " << got << "\n";
+        }
+    }
+
+    std::cout << "Semantics tests run: " << testsRun << ", passed: " << testsPassed << "\n";
+    return testsRun == testsPassed ? 0 : 1;
 }
 
 bool TestRunner::runTest(const std::string &title, const std::vector<std::string> &asmLines, ISAMode mode)
@@ -523,6 +630,45 @@ int TestRunner::unitTests()
     totalTests++;
     ;
 
+    // 64-bit shift amounts (6 bits) and lh/lhu offsets must survive an assemble/disassemble round trip.
+    if (runTest("RV64 shift amounts and halfword loads", {"slli x1, x1, 40", "srli x2, x2, 63", "srai x3, x3, 33",
+                                                          "slliw x4, x4, 31", "lh x5, 100(x6)", "lhu x7, 100(x8)"},
+                ISAMode::RV64I))
+        passedTests++;
+    totalTests++;
+
+    // Assembler validation: out-of-range immediates and unknown registers must be rejected, not silently
+    // truncated, and no code may be emitted for them. Boundary values must still assemble.
+    {
+        auto assembledCount = [](const std::string &line)
+        {
+            std::ostringstream sink;
+            Assembler assembler(std::cin, sink, ISAMode::RV32I);
+            return assembler.assemble({line}).size();
+        };
+        bool ok = true;
+        for (const char *good : {"addi x1, x0, 2047", "addi x1, x0, -2048", "sw x1, 2047(x2)", "beq x0, x0, 4094",
+                                 "lui x1, 0xFFFFF", "jal x1, 1048574"})
+            if (assembledCount(good) != 1)
+            {
+                std::cout << "[FAIL] Assembler should accept: " << good << "\n";
+                ok = false;
+            }
+        for (const char *bad : {"addi x1, x0, 2048", "addi x1, x0, -2049", "addi x1, x0, 99999999999", "sw x1, 2048(x2)",
+                                "beq x0, x0, 4096", "lui x1, 0x100000", "jal x1, 1048576", "slli x1, x1, 32", "slliw x1, x1, 32", "addi x1, x99, 1",
+                                "add x1, x2, x99", "sw x1, 0(x99)"})
+            if (assembledCount(bad) != 0)
+            {
+                std::cout << "[FAIL] Assembler should reject: " << bad << "\n";
+                ok = false;
+            }
+        std::cout << (ok ? "[PASS]" : "[FAIL]") << " Assembler validation (immediate range, invalid registers)\n";
+        if (ok)
+            passedTests++;
+        totalTests++;
+    }
+
+    std::cout << std::dec; // an earlier test leaves std::cout in hex mode
     std::cout << "Unit Test Summary: " << passedTests << "/" << totalTests << " passed.\n";
     return passedTests == totalTests ? 0 : 1;
 }
@@ -804,11 +950,15 @@ int TestRunner::runHazardTests(const std::string &rootDir, ISAMode mode)
 int TestRunner::runAllTests(ISAMode mode)
 {
 
-    unitTests();
-    integrationTests();
-    runIntegrationTestSuite("Test", mode);
-    runCacheTests();
-    runHazardTests("Test/PipelineHazards",mode);
-    return 0;
+    // Run every group even if an earlier one fails, then report overall failure.
+    int status = 0;
+    status |= unitTests();
+    status |= integrationTests();
+    status |= runIntegrationTestSuite("Test", mode);
+    status |= runSemanticsTests("Test/Semantics", mode);
+    status |= runSemanticsTests("Test/Semantics32", ISAMode::RV32IM);
+    status |= runCacheTests();
+    status |= runHazardTests("Test/PipelineHazards", mode);
+    return status;
 
 }

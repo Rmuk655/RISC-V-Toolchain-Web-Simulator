@@ -40,14 +40,14 @@ public:
     // Resets statistics and access counter.
     void reset();
 
-    uint32_t read(uint32_t address, MemSize size, bool isUnsigned = false);
-    void write(uint32_t address, MemSize size, uint32_t value);
+    int64_t read(uint32_t address, MemSize size, bool isUnsigned = false);
+    void write(uint32_t address, MemSize size, uint64_t value);
 
     // Simulates a read or write operation:
     //      Increments accessCounter and accesses. Looks up the correct set and tag.
     //      If found → Hit. If not → Miss, replace block using policy.
     //      If isWrite and policy is Write-Back, mark block dirty.
-    uint32_t access(uint32_t address, MemSize size, bool isUnsigned, bool isWrite, uint32_t writeValue=0);
+    int64_t access(uint32_t address, MemSize size, bool isUnsigned, bool isWrite, uint64_t writeValue=0);
     // Clears the cache (marks all blocks invalid).
     void invalidate();
     //Dump the current cache state to a outputstream (like a memory dump).
@@ -55,8 +55,8 @@ public:
     //Displays performance
     void printStats(std::ostream& out) const;
 
-    void writeToMemory(uint32_t address, MemSize size, uint32_t value) ;
-    int readFromMemory(uint32_t address, MemSize size, bool isUnsigned = false) const;
+    void writeToMemory(uint32_t address, MemSize size, uint64_t value) ;
+    int64_t readFromMemory(uint32_t address, MemSize size, bool isUnsigned = false) const;
     void setLogStream(std::ostream& log) { logStream = &log;}
 
     
@@ -109,9 +109,9 @@ public:
 
         std::pair<uint32_t, uint64_t> decodeAddress(uint32_t address) const;
         CacheBlock* findBlockInSet(std::vector<CacheBlock>& set, uint64_t tag);
-        uint32_t handleWriteHit(CacheBlock& block, int setIndex, uint32_t address, MemSize size, uint32_t value) ;
-        uint32_t handleMiss(std::vector<CacheBlock>& set, int setIndex, uint32_t address, uint64_t tag,
-                            MemSize size, bool isUnsigned, bool isWrite, uint32_t value);
+        uint32_t handleWriteHit(CacheBlock& block, int setIndex, uint32_t address, MemSize size, uint64_t value) ;
+        int64_t handleMiss(std::vector<CacheBlock>& set, int setIndex, uint32_t address, uint64_t tag,
+                            MemSize size, bool isUnsigned, bool isWrite, uint64_t value);
         CacheBlock* replaceBlock(std::vector<CacheBlock>& set, int setIndex, uint64_t tag, uint32_t address,bool isWrite);
         void writeBlockToMemory(const CacheBlock& block) ;
 

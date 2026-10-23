@@ -198,7 +198,9 @@ const Instruction *InstructionSet::getByEncoded(uint32_t code) const
                 // Special case: shift instructions (srai, srli, slli) have funct7
                 if (instr.isShiftInstruction(instr.mnemonic))
                 {
-                    if (instr.funct7 == funct7)
+                    // Bit 25 is the top bit of a 6-bit shift amount for the 64-bit (non-w) shifts.
+                    uint8_t mask = instr.mnemonic.back() == 'w' ? 0x7F : 0x7E;
+                    if ((instr.funct7 & mask) == (funct7 & mask))
                         return &instr;
                 }
                 else

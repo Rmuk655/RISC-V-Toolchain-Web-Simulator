@@ -41,7 +41,7 @@ assemble: $(TARGET)
 	./$(TARGET) -mode RV64IM -a Test/complexMul.s
 
 deassemble: $(TARGET)
-	./$(TARGET) -mode RB64IM -d Test/complexMul.b
+	./$(TARGET) -mode RV64IM -d Test/complexMul.b
 
 simulate: $(TARGET)
 	./$(TARGET) -mode RV64IM -s

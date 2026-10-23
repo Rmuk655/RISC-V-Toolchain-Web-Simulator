@@ -38,11 +38,11 @@ public:
     void setProgramName(const std::string& programName);
 
     // Read returns data
-    uint32_t read(uint32_t addr, MemSize size, bool isUnsigned);
+    int64_t read(uint32_t addr, MemSize size, bool isUnsigned);
 
 
     // Write passes data
-    void write(uint32_t address, MemSize size, uint32_t value);
+    void write(uint32_t address, MemSize size, uint64_t value);
     // Clears the entire cache
     void invalidate();
     //Dumps current cache content to a file

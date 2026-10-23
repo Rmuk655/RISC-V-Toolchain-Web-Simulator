@@ -124,11 +124,11 @@ void Instruction::decodeRegistersAndImmediate(uint32_t code, int &rd, int &rs1, 
         funct7 = extract(code, 25, 7);
 
         // Special case for slli, srli, srai: funct3 == 001 or 101
-        if (funct3 == 0b001 || funct3 == 0b101)
+        if (isShiftInstruction(mnemonic))
         {
-            // These are shift instructions: extract shamt only
+            // These are shift instructions: extract shamt only (6 bits, 5 for the *w forms)
             // shamt is unsigned, use int32_t for uniformity
-            imm = extract(code, 20, 5);
+            imm = extract(code, 20, mnemonic.back() == 'w' ? 5 : 6);
         }
         else
         {
@@ -200,8 +200,10 @@ uint32_t Instruction::getMachineCode(int rd, int rs1, int rs2, int imm) const
         // Only apply funct7 for shift instructions like srai, srli, slli
         if (isShiftInstruction(mnemonic))
         {
-            uint32_t shamt = imm & 0x1F; // low 5 bits
-            code |= pack(shamt, 20, 5);  // bits 20–24
+            // 6-bit shift amount (bits 20-25) for the 64-bit shifts, 5 bits for the *w forms.
+            bool wordShift = mnemonic.back() == 'w';
+            uint32_t shamt = imm & (wordShift ? 0x1F : 0x3F);
+            code |= pack(shamt, 20, wordShift ? 5 : 6);
             code |= pack(funct7, 25, 7); // funct7 from Instruction
         }
         else if (mnemonic == "ebreak" || mnemonic == "ecall")

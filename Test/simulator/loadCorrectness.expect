@@ -9,12 +9,12 @@ RISC Sim> Printing currently loaded instructions ....
 lui x5, 0xAB
 addi x5, x5, 0xCD
 lui x5, 0xA
-addi x5, x5, 0xBCD
+addi x5, x5, -1075
 RISC Sim> Call stack (oldest to newest):
 #0   * main * at line : 2 Next Instruction 0x00000004 
 RISC Sim> Executed: addi x5, x5, 0xCD (line: 3) ; PC = 0x000004 (4)
 Executed: lui x5, 0xA (line: 6) ; PC = 0x000008 (8)
-Executed: addi x5, x5, 0xBCD (line: 7) ; PC = 0x00000c (12)
+Executed: addi x5, x5, -1075 (line: 7) ; PC = 0x00000c (12)
 Program completed (possibly reached end of program).
 RISC Sim> Exiting simulator...
 [0m

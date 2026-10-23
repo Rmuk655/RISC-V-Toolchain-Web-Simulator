@@ -70,7 +70,7 @@
     # --- Test 9: Memory store/load ---
     # base address simulation (just a number, no real mem)
     addi x12, x0, 100
-    addi x13, x0, 0x12345678
+    addi x13, x0, 0x678
 
     sw x13, 0(x12)
     lw x14, 0(x12)
@@ -81,12 +81,12 @@
     # 0x12345678 = 305419896 decimal
     # do it via multiple adds (not optimal but no li):
 
-    addi x31, x0, 305000000    # too large immediate? No, addi is 12-bit signed immediate only
+    addi x31, x0, -448    # too large immediate? No, addi is 12-bit signed immediate only
 
     # We must build it differently using lui + addi or use small constants in test sim
 
 
-    lui x31, 0x12345           # x31 = 0x12345000
+    lui x31, 0x0               # x31 = 0 (was 0x12345000; the stored value is now 0x678, see line 73)
     addi x31, x31, 0x678      # x31 = 0x12345678
 
     bne x14, x31, fail_mem

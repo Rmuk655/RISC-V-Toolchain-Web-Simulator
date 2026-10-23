@@ -12,6 +12,7 @@ public:
     int unitTests();
     int integrationTests();
     int runIntegrationTestSuite(const std::string &testDir, ISAMode mode = ISAMode::RV32I);
+    int runSemanticsTests(const std::string &dir = "Test/Semantics", ISAMode mode = ISAMode::RV64IM);
     int runCacheTests(const std::string &rootDir = "Test/CacheSimulator");
     int runAllTests(ISAMode mode = ISAMode::RV32I);
     int runHazardTests(const std::string &rootDir,ISAMode mode= ISAMode::RV32I);

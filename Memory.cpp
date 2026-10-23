@@ -30,29 +30,19 @@ void Memory::clear()
     memory.clear();
 }
 
-int32_t Memory::read(uint32_t address, MemSize size, bool isUnsigned) const {
+int64_t Memory::read(uint32_t address, MemSize size, bool isUnsigned) const {
 
     int sz = static_cast<int>(size);
-    uint32_t val = 0;
+    uint64_t val = 0;
     for (int i = 0; i < sz; ++i) {
-        val |= (static_cast<uint32_t>(static_cast<uint8_t>(getByte(address + i))) << (8 * i));
+        val |= (static_cast<uint64_t>(static_cast<uint8_t>(getByte(address + i))) << (8 * i));
     }
 
-    // Sign-extend for smaller sizes if needed
-    if (!isUnsigned) {
-        if (size == MemSize::HalfWord) {
-            return static_cast<int16_t>(val);
-        }
-        if (size == MemSize::Byte) {
-            return static_cast<int8_t>(val);
-        }
-    }
-
-    return val;
+    return extendLoadedValue(val, size, isUnsigned);
 }
 
-void Memory::write(uint32_t address,  MemSize size, uint32_t value) {
-    
+void Memory::write(uint32_t address,  MemSize size, uint64_t value) {
+
 
     int sz = static_cast<int>(size);
     for (int i = 0; i < sz; ++i) {

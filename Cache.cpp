@@ -193,7 +193,7 @@
 
 
 
-    uint32_t Cache::access(uint32_t address, MemSize size, bool isUnsigned, bool isWrite, uint32_t value) {
+    int64_t Cache::access(uint32_t address, MemSize size, bool isUnsigned, bool isWrite, uint64_t value) {
         uint32_t index = addrDecoder.getIndex(address);
         uint64_t tag  = addrDecoder.getTag(address);
         auto& set = sets[index];
@@ -242,7 +242,7 @@
     // Write-Back Policy (WB): Mark the block as dirty. No memory write now ; it will happen later, on eviction.
     // Write-Through Policy (WT): Immediately write to main memory too. No dirty bit needed.
     
-    uint32_t Cache::handleWriteHit(CacheBlock& block, int setIndex, uint32_t address, MemSize size, uint32_t value) {
+    uint32_t Cache::handleWriteHit(CacheBlock& block, int setIndex, uint32_t address, MemSize size, uint64_t value) {
         
     
         block.writeData(address, size, value, config.blockSize);
@@ -261,8 +261,8 @@
         return address;
     }
 
-    uint32_t Cache::handleMiss(std::vector<CacheBlock>& set, int setIndex, uint32_t address, uint64_t tag,
-                            MemSize size, bool isUnsigned, bool isWrite, uint32_t value) {
+    int64_t Cache::handleMiss(std::vector<CacheBlock>& set, int setIndex, uint32_t address, uint64_t tag,
+                            MemSize size, bool isUnsigned, bool isWrite, uint64_t value) {
 
         // No-Allocate for WT i.e.  On a write miss, write directly to memory, but do not load the block into the cache.
         if (isWrite && config.writePolicy == WritePolicy::WT) {
@@ -408,21 +408,37 @@
     }
 
 
-    uint32_t Cache::read(uint32_t address, MemSize size, bool isUnsigned) {
+    // A block holds one aligned span of memory, so an access that crosses a block boundary cannot be served
+    // by one block. Such accesses are split into byte accesses (little-endian); each byte counts as an access.
+    static bool crossesBlock(uint32_t address, MemSize size, uint32_t blockSize) {
+        return (address % blockSize) + static_cast<uint32_t>(size) > blockSize;
+    }
+
+    int64_t Cache::read(uint32_t address, MemSize size, bool isUnsigned) {
+        if (crossesBlock(address, size, config.blockSize)) {
+            uint64_t raw = 0;
+            for (uint32_t i = 0; i < static_cast<uint32_t>(size); ++i)
+                raw |= static_cast<uint64_t>(access(address + i, MemSize::Byte, true, false) & 0xFF) << (8 * i);
+            return extendLoadedValue(raw, size, isUnsigned);
+        }
         return access(address, size, isUnsigned, false );
     }
 
-    void Cache::write(uint32_t address, MemSize size, uint32_t value) {
-        
+    void Cache::write(uint32_t address, MemSize size, uint64_t value) {
+        if (crossesBlock(address, size, config.blockSize)) {
+            for (uint32_t i = 0; i < static_cast<uint32_t>(size); ++i)
+                access(address + i, MemSize::Byte, false, true, (value >> (8 * i)) & 0xFF);
+            return;
+        }
         access(address, size, false, true, value );
     }
 
-    void Cache::writeToMemory(uint32_t address, MemSize size, uint32_t value) {
-        if(memory) memory->write(address,size,value);    
+    void Cache::writeToMemory(uint32_t address, MemSize size, uint64_t value) {
+        if(memory) memory->write(address,size,value);
     }
 
 
-    int Cache::readFromMemory(uint32_t address, MemSize size, bool isUnsigned ) const {
+    int64_t Cache::readFromMemory(uint32_t address, MemSize size, bool isUnsigned ) const {
         if(memory) return memory->read(address,size,isUnsigned);    
         return -1;
     }

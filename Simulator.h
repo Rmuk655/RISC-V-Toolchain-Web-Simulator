@@ -20,7 +20,7 @@ class Simulator : public ExecutionEngine
 public:
     Simulator(std::istream &in = std::cin, std::ostream &out = std::cout, ISAMode mode = ISAMode::RV32I)
         : in(in), out(out), assembler(in, out, mode), breakpointInfo(in, out), memory(out), 
-        hazardDetector(in,out), shadowCallStack(in, out)  {}
+        hazardDetector(in,out), shadowCallStack(in, out), isaMode(mode)  {}
     // load the program into the simulator
     void load(const std::vector<InstructionInstance> &instructions) override;
     // this will run until the program ends or a breakpoint is hit
@@ -47,7 +47,8 @@ public:
     void initializeRegisters();
 
     // track anyone setting special register values like x[0] and x[1]
-    void setRegValue(int regNum, int value);
+    // RV64 modes keep the full 64-bit value; RV32 modes store it truncated to 32 bits and sign-extended.
+    void setRegValue(int regNum, int64_t value);
 
     Assembler &getAssembler()
     {
@@ -83,8 +84,8 @@ protected:
     // break points with  program counter as key and original assembly line as value
     BreakPointInfo breakpointInfo;
 
-    void writeMemory(uint32_t addr, MemSize size, uint32_t val);
-    int readMemory(uint32_t addr, MemSize size, bool isUnsigned);
+    void writeMemory(uint32_t addr, MemSize size, uint64_t val);
+    int64_t readMemory(uint32_t addr, MemSize size, bool isUnsigned);
 
     CacheSimulator cacheSim;
 
@@ -106,6 +107,10 @@ private:
     //bool hazardDetectionEnabled = false;
     // call stack details
     ShadowCallStack shadowCallStack;
+
+    // ISA mode the simulator was created with; decides register width and shift-amount width
+    ISAMode isaMode;
+    bool isRV64() const { return isaMode == ISAMode::RV64I || isaMode == ISAMode::RV64IM; }
 
     // is the simulator running: this is used to stop the simulator when a breakpoint is hit
     bool running = true;

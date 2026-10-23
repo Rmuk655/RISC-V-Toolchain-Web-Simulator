@@ -41,7 +41,7 @@ class Assembler
 
 public:
     Assembler(std::istream &in = std::cin, std::ostream &out = std::cout, ISAMode mode = ISAMode::RV32I)
-        : in(in), out(out), instructionSet(mode), parser() {}
+        : in(in), out(out), instructionSet(mode), parser(), rv64(mode == ISAMode::RV64I || mode == ISAMode::RV64IM) {}
 
     // Parses assembly lines and returns a vector of encoded instructions
     std::vector<uint32_t> assemble(const std::vector<std::string> &lines);
@@ -96,6 +96,7 @@ private:
    
 
 
+    bool rv64; // 64-bit ISA: 64-bit shifts take 6-bit shift amounts
 };
 
 #endif // ASSEMBLER_H

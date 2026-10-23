@@ -74,14 +74,37 @@ void Simulator::initializeRegisters()
     }
 }
 
-void Simulator::setRegValue(int regNum, int value)
+// Full-width shifts. RV64 uses a 6-bit shift amount on the 64-bit register; RV32 modes use a
+// 5-bit amount on the low 32 bits, sign-extended into the 64-bit storage.
+static int64_t shiftLeftLogical(int64_t value, int64_t amount, bool rv64)
+{
+    if (rv64)
+        return (int64_t)((uint64_t)value << (amount & 0x3F));
+    return (int64_t)(int32_t)((uint32_t)value << (amount & 0x1F));
+}
+
+static int64_t shiftRightLogical(int64_t value, int64_t amount, bool rv64)
+{
+    if (rv64)
+        return (int64_t)((uint64_t)value >> (amount & 0x3F));
+    return (int64_t)(int32_t)((uint32_t)value >> (amount & 0x1F));
+}
+
+static int64_t shiftRightArithmetic(int64_t value, int64_t amount, bool rv64)
+{
+    if (rv64)
+        return value >> (amount & 0x3F);
+    return (int64_t)((int32_t)value >> (amount & 0x1F));
+}
+
+void Simulator::setRegValue(int regNum, int64_t value)
 {
     // x0 always zero ; do not allow to overwrite
     if (regNum == 0)
         return;
     // ra value is for managing return addresses; track when it is overwritten for debugging
     // if (regNum == 1)  std::cout <<" Overwriting ra value : "<< value << "\n";
-    regs[regNum] = value;
+    regs[regNum] = isRV64() ? value : (int64_t)(int32_t)value;
 }
 
 void Simulator::load(const std::vector<InstructionInstance> &instructions)
@@ -226,21 +249,28 @@ void Simulator::execute(const InstructionInstance &inst)
     else if (name == "xor")
         rd = rs1 ^ rs2;
     else if (name == "sll")
-        rd = rs1 << (rs2 & 0x1F);
+        rd = shiftLeftLogical(rs1, rs2, isRV64());
     else if (name == "srl")
-        rd = rs1 >> (rs2 & 0x1F);
+        rd = shiftRightLogical(rs1, rs2, isRV64());
     else if (name == "sra")
-        rd = (int32_t)rs1 >> (rs2 & 0x1F);
+        rd = shiftRightArithmetic(rs1, rs2, isRV64());
 
     // --- RV32M Extension (Multiply/Divide) ---
     else if (name == "mul")
-        rd = (int32_t)rs1 * (int32_t)rs2;
+        // Low half of the product: 64 bits in RV64, 32 bits (sign-extended) in RV32. Unsigned math avoids
+        // signed-overflow undefined behaviour.
+        rd = isRV64() ? (int64_t)((uint64_t)rs1 * (uint64_t)rs2)
+                      : (int64_t)(int32_t)((uint32_t)rs1 * (uint32_t)rs2);
+    // High half of the product: bits 127..64 in RV64, bits 63..32 in RV32 (registers hold sign-extended 32-bit values).
     else if (name == "mulh")
-        rd = ((__int128_t)(int64_t)rs1 * (__int128_t)(int64_t)rs2) >> 64; // Use 128-bit intermediate for high bits
+        rd = isRV64() ? (int64_t)(((__int128_t)(int64_t)rs1 * (__int128_t)(int64_t)rs2) >> 64)
+                      : (int64_t)(((int64_t)(int32_t)rs1 * (int64_t)(int32_t)rs2) >> 32);
     else if (name == "mulhsu")
-        rd = ((__int128_t)(int64_t)rs1 * (__int128_t)(uint64_t)rs2) >> 64;
+        rd = isRV64() ? (int64_t)(((__int128_t)(int64_t)rs1 * (__int128_t)(uint64_t)rs2) >> 64)
+                      : (int64_t)(((int64_t)(int32_t)rs1 * (int64_t)(uint32_t)rs2) >> 32);
     else if (name == "mulhu")
-        rd = ((__int128_t)(uint64_t)rs1 * (__int128_t)(uint64_t)rs2) >> 64;
+        rd = isRV64() ? (int64_t)(((__int128_t)(uint64_t)rs1 * (__int128_t)(uint64_t)rs2) >> 64)
+                      : (int64_t)(int32_t)(((uint64_t)(uint32_t)rs1 * (uint64_t)(uint32_t)rs2) >> 32);
     else if (name == "div")
         if (rs2 == 0)
             rd = -1; // Division by zero
@@ -285,7 +315,7 @@ void Simulator::execute(const InstructionInstance &inst)
 
     // --- RV64M Extension (64-bit Multiply/Divide) ---
     else if (name == "mulw")
-        rd = (int64_t)(int32_t)(rs1 * rs2);
+        rd = (int64_t)(int32_t)((uint32_t)rs1 * (uint32_t)rs2); // unsigned math: no signed-overflow UB
     else if (name == "divw")
     {
         int32_t dividend = rs1;
@@ -337,11 +367,11 @@ void Simulator::execute(const InstructionInstance &inst)
     else if (name == "xori")
         rd = rs1 ^ imm;
     else if (name == "slli")
-        rd = rs1 << (imm & 0x3F);
+        rd = shiftLeftLogical(rs1, imm, isRV64());
     else if (name == "srli")
-        rd = ((uint32_t)rs1) >> (imm & 0x1F); // logical shift right
+        rd = shiftRightLogical(rs1, imm, isRV64());
     else if (name == "srai")
-        rd = (int32_t)rs1 >> (imm & 0x1F);
+        rd = shiftRightArithmetic(rs1, imm, isRV64());
 
     // --- RV64I Extension (64-bit Base) ---
     else if (name == "addiw")
@@ -449,11 +479,12 @@ void Simulator::execute(const InstructionInstance &inst)
         // [ imm[31:12] | rd | opcode ]: The immediate is 20 bits, but it is placed in bits 31 to 12.
         // When executed, this 20-bit value is shifted left by 12 bits, so:
         // lui x1, 0x10000 means: x1 = 0x10000 << 12 = 0x10000000
-        rd = imm << 12;
+        // In RV64 the 32-bit result is sign-extended into the 64-bit register.
+        rd = (int64_t)(int32_t)((uint32_t)imm << 12);
     }
     else if (name == "auipc")
     {
-        rd = pc + (imm << 12);
+        rd = pc + (int64_t)(int32_t)((uint32_t)imm << 12);
     }
 
     // Check if instruction writes to a register
@@ -570,7 +601,7 @@ void Simulator::printCacheStats() const
     cacheSim.printStats(out);
 }
 
-int Simulator::readMemory(uint32_t addr, MemSize size, bool isUnsigned)
+int64_t Simulator::readMemory(uint32_t addr, MemSize size, bool isUnsigned)
 {
     if (cacheSim.isEnabled())
     {
@@ -579,7 +610,7 @@ int Simulator::readMemory(uint32_t addr, MemSize size, bool isUnsigned)
     return memory.read(addr, size, isUnsigned);
 }
 
-void Simulator::writeMemory(uint32_t addr, MemSize size, uint32_t val)
+void Simulator::writeMemory(uint32_t addr, MemSize size, uint64_t val)
 {
     if (cacheSim.isEnabled())
     {

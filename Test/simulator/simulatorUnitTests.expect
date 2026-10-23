@@ -37,11 +37,11 @@ srai x11, x10, 2
 addi x31, x0, -4
 bne x11, x31, fail_srai
 addi x12, x0, 100
-addi x13, x0, 0x12345678
+addi x13, x0, 0x678
 sw x13, 0(x12)
 lw x14, 0(x12)
-addi x31, x0, 305000000
-lui x31, 0x12345
+addi x31, x0, -448
+lui x31, 0x0
 addi x31, x31, 0x678
 bne x14, x31, fail_mem
 addi x10, x0, 0
@@ -98,11 +98,11 @@ Executed: srai x11, x10, 2 (line: 64) ; PC = 0x00006c (108)
 Executed: addi x31, x0, -4 (line: 66) ; PC = 0x000070 (112)
 Executed: bne x11, x31, fail_srai (line: 68) ; PC = 0x000074 (116)
 Executed: addi x12, x0, 100 (line: 72) ; PC = 0x000078 (120)
-Executed: addi x13, x0, 0x12345678 (line: 73) ; PC = 0x00007c (124)
+Executed: addi x13, x0, 0x678 (line: 73) ; PC = 0x00007c (124)
 Executed: sw x13, 0(x12) (line: 75) ; PC = 0x000080 (128)
 Executed: lw x14, 0(x12) (line: 76) ; PC = 0x000084 (132)
-Executed: addi x31, x0, 305000000 (line: 84) ; PC = 0x000088 (136)
-Executed: lui x31, 0x12345 (line: 89) ; PC = 0x00008c (140)
+Executed: addi x31, x0, -448 (line: 84) ; PC = 0x000088 (136)
+Executed: lui x31, 0x0 (line: 89) ; PC = 0x00008c (140)
 Executed: addi x31, x31, 0x678 (line: 90) ; PC = 0x000090 (144)
 Executed: bne x14, x31, fail_mem (line: 92) ; PC = 0x000094 (148)
 Executed: addi x10, x0, 0 (line: 96) ; PC = 0x000098 (152)

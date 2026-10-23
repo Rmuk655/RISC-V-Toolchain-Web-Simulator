@@ -211,6 +211,38 @@ int32_t Assembler::parseImmediate(const std::string &token, int pc) const
         logError("Undefined label:" + token, pc);
         return 0;
     }
+    catch (const std::out_of_range &)
+    {
+        return INT32_MAX; // does not fit any immediate field; the range check in assemble() reports it
+    }
+}
+
+// True if imm fits the immediate field of the instruction's format, so it is not silently truncated.
+// Shift amounts are 0..31 (RV32 and the *w forms) or 0..63 (64-bit shifts in RV64); rv64 says if the ISA is RV64.
+static bool immediateFits(const Instruction *instr, int imm, bool rv64)
+{
+    switch (instr->format)
+    {
+    case InstrFormat::I:
+    {
+        const std::string &m = instr->mnemonic;
+        if (m == "slli" || m == "srli" || m == "srai")
+            return imm >= 0 && imm <= (rv64 ? 63 : 31);
+        if (m == "slliw" || m == "srliw" || m == "sraiw")
+            return imm >= 0 && imm <= 31;
+        return imm >= -2048 && imm <= 2047;
+    }
+    case InstrFormat::S:
+        return imm >= -2048 && imm <= 2047;
+    case InstrFormat::B:
+        return imm >= -4096 && imm <= 4094 && imm % 2 == 0;
+    case InstrFormat::J:
+        return imm >= -1048576 && imm <= 1048574 && imm % 2 == 0;
+    case InstrFormat::U:
+        return imm >= -524288 && imm <= 1048575; // signed or unsigned 20-bit forms
+    default:
+        return true;
+    }
 }
 
 // collectLabels collects labels in LabelSet and returns instruction lines only (with label definitions removed)
@@ -418,6 +450,14 @@ std::vector<uint32_t> Assembler::assemble(const std::vector<std::string> &lines)
         }
 
 
+    // parseRegister returns -1 for an unknown register; do not emit code for it or for an out-of-range immediate.
+    if (!invalidInstruction && (rd < 0 || rs1 < 0 || rs2 < 0))
+        invalidInstruction = 1;
+    else if (!invalidInstruction && !immediateFits(instr, imm, rv64))
+    {
+        logError("Immediate out of range for " + instr->mnemonic + ": " + std::to_string(imm), pc);
+        invalidInstruction = 1;
+    }
     // If the instruction is valid, skip it
     if (!invalidInstruction) {
         // Create an InstructionInstance object

@@ -62,13 +62,13 @@ void CacheSimulator::setProgramName(const std::string& programName) {
 }
 
 
-uint32_t CacheSimulator::read(uint32_t address, MemSize size, bool isUnsigned) {
+int64_t CacheSimulator::read(uint32_t address, MemSize size, bool isUnsigned) {
     if (!enabled ) return address;
     return cache.read(static_cast<uint64_t>(address), size, isUnsigned);
     
 }
 
-void CacheSimulator::write(uint32_t address, MemSize size, uint32_t value) {
+void CacheSimulator::write(uint32_t address, MemSize size, uint64_t value) {
       if (!enabled ) return;
     cache.write(static_cast<uint64_t>(address), size, value);
     

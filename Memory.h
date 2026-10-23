@@ -37,13 +37,34 @@ enum class MemSize : int
     DoubleWord = 8
 };
 
+// Zero- or sign-extends a raw little-endian value of the given size to 64 bits.
+// Shared by Memory and CacheBlock so loads give the same result with or without the cache.
+inline int64_t extendLoadedValue(uint64_t raw, MemSize size, bool isUnsigned)
+{
+    if (!isUnsigned)
+    {
+        switch (size)
+        {
+        case MemSize::Byte:
+            return static_cast<int8_t>(raw);
+        case MemSize::HalfWord:
+            return static_cast<int16_t>(raw);
+        case MemSize::Word:
+            return static_cast<int32_t>(raw);
+        case MemSize::DoubleWord:
+            break;
+        }
+    }
+    return static_cast<int64_t>(raw);
+}
+
 class Memory
 {
 public:
     Memory(std::ostream &out = std::cout) : out(out) {}
 
-    int read(uint32_t address, MemSize size, bool isUnsigned = false) const;
-    void write(uint32_t address, MemSize size, uint32_t value);
+    int64_t read(uint32_t address, MemSize size, bool isUnsigned = false) const;
+    void write(uint32_t address, MemSize size, uint64_t value);
 
     void print(uint32_t startAddress, uint32_t count) const;
     void clear();

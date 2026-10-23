@@ -70,9 +70,9 @@ public:
     CacheBlock() : valid(false), dirty(false), tag(0), lastUsed(0), insertionTime(0),index(0) {}
     // Writes value into this block at the correct offset based on the memory address.
     // Assumes this block starts at a given base address (block-aligned).
-    void writeData(uint32_t address, MemSize size, uint32_t value, uint32_t blockSize);
+    void writeData(uint32_t address, MemSize size, uint64_t value, uint32_t blockSize);
     // Reads value from this block at the given address offset.
-    uint32_t readData(uint32_t address, MemSize size,   bool isUnsigned, uint32_t blockSize) const;
+    int64_t readData(uint32_t address, MemSize size,   bool isUnsigned, uint32_t blockSize) const;
     // method to get the memory address this block maps to
     uint32_t getBlockAddress(const CacheConfig& config) const {
         uint32_t blockAddr = ((tag << config.getIndexBits()) | index) << config.getOffsetBits();

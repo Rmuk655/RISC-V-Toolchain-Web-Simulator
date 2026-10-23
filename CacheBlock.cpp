@@ -15,7 +15,7 @@
 // Reads value from this block at the given address offset.
     
 
-void CacheBlock::writeData(uint32_t address, MemSize Msize, uint32_t value, uint32_t blockSize) {
+void CacheBlock::writeData(uint32_t address, MemSize Msize, uint64_t value, uint32_t blockSize) {
     uint32_t offset = address % blockSize;
     int size = static_cast<int>(Msize);
     if (offset + size > data.size()) return; // Prevent overflow
@@ -27,23 +27,17 @@ void CacheBlock::writeData(uint32_t address, MemSize Msize, uint32_t value, uint
 }
 
 // Reads value from this block at the given address offset.
-uint32_t CacheBlock::readData(uint32_t address, MemSize Msize,   bool isUnsigned, uint32_t blockSize) const {
+int64_t CacheBlock::readData(uint32_t address, MemSize Msize,   bool isUnsigned, uint32_t blockSize) const {
     uint32_t offset = address % blockSize;
     int size = static_cast<int>(Msize);
-    uint32_t result = 0;
+    uint64_t result = 0;
     for (int i = 0; i < size; ++i) {
         if (offset + i < data.size()) {
-            result |= static_cast<uint32_t>(data[offset + i]) << (8 * i);
+            result |= static_cast<uint64_t>(data[offset + i]) << (8 * i);
         }
     }
 
-    if (!isUnsigned && size < 4) {
-        // Sign-extend if needed
-        int32_t signedVal = static_cast<int32_t>(result << ((4 - size) * 8));
-        return static_cast<uint32_t>(signedVal >> ((4 - size) * 8));
-    }
-
-    return result;
+    return extendLoadedValue(result, Msize, isUnsigned);
 }
 
 //Writes each byte of the block to memory at the correct offset with MemSize::Byte.
