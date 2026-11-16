@@ -23,3 +23,9 @@ pipeline_dump
 test.out
 emsdk/
 test*.dump
+
+# Local tool and editor state
+.claude/
+.graphify/
+graphify-out/
+.tools/
