@@ -12,11 +12,11 @@
  * - void Memory::clear()
  *      Clears all memory contents.
  *
- * - int32_t Memory::read(uint32_t address, MemSize size, bool isUnsigned) const
+ * - int64_t Memory::read(uint32_t address, MemSize size, bool isUnsigned) const
  *      Reads a value from memory at the specified address and size.
  *      Supports sign-extension for signed accesses.
  *
- * - void Memory::write(uint32_t address, MemSize size, uint32_t value)
+ * - void Memory::write(uint32_t address, MemSize size, uint64_t value)
  *      Writes a value to memory at the specified address and size.
  *
  * - void Memory::print(uint32_t startAddress, uint32_t count) const
