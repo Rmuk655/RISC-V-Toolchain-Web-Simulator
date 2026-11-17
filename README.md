@@ -49,6 +49,10 @@ flowchart LR
 | **Web simulator** | The same engine compiled with Emscripten, with an HTML/JS front end. |
 | **Cache visualizer** | A Streamlit app comparing hit rates across cache configurations. |
 
+## Setup
+
+Ubuntu/WSL (needs sudo for apt): `bash setup.sh` installs build tools, make, nodejs and Python, creates `.venv`, installs `requirements.txt` (visualizer only) and runs `make build`. The web build (`make websim`) needs Emscripten; `setup.sh` installs it from the official emsdk repo (https://github.com/emscripten-core/emsdk) into `./emsdk`. Then `source emsdk/emsdk_env.sh && make websim`. Run the tests with `make test`.
+
 ## Quick start
 
 Requires `g++` with C++17 and `make`.

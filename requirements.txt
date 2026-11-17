@@ -1,3 +1,5 @@
-streamlit
-pandas
-matplotlib
+# Only for CachesimulatorGUI.py (optional Streamlit cache GUI). Core simulator is plain C++17.
+# Non-pip tools: g++, make (core); em++ via emsdk 3.1.64 + node (web build); python3 (serve_wasm.py).
+streamlit>=1.30
+pandas>=2.0
+matplotlib>=3.7
